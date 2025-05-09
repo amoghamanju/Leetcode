@@ -15,26 +15,18 @@
  */
 class Solution {
     public int goodNodes(TreeNode root) {
-       return dfs(root,new ArrayList<>());
+       return dfs(root,root.val);
     }
-    private int dfs(TreeNode node, List<Integer> path)
+    private int dfs(TreeNode node, int maxsofar)
     {
         if (node==null)return 0;
-        boolean isgood=true;
-        for(int val:path)
-        {
-            if(val>node.val)
-            {
-                isgood=false;
-                break;
-            }
-        }
-        path.add(node.val);
+        int count=0;
+        if(node.val>=maxsofar)count=1;
+        maxsofar=Math.max(maxsofar,node.val);
 
-        int left=dfs(node.left, path);
-        int right= dfs(node.right, path);
-        path.remove(path.size()-1);
+        count+=dfs(node.left, maxsofar);
+        count+= dfs(node.right, maxsofar);
 
-        return (isgood?1:0)+left+right;
+        return count;
     }
 }
